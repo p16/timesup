@@ -1,7 +1,8 @@
 var menubar = require('menubar');
 var electron = require('electron');
+var _ = require('lodash');
 const {ipcMain, BrowserWindow} = electron;
-var mb = menubar();
+var mb = menubar({index: 'file://' + __dirname + '/index.html'});
 let mainWindow;
 
 ipcMain.on('asynchronous-message', (event, arg) => {
@@ -24,6 +25,25 @@ function createWindow() {
 }
 
 mb.on('ready', function ready() {
-  createWindow();
-  mb.tray.setTitle('ciao');
+  console.log('ok, we are ready :)');
+  mb.tray.setTitle('0:00');
 });
+
+
+ipcMain.on('clear-timer', (event, arg) => {
+  mb.tray.setTitle('0:00');
+})
+
+ipcMain.on('pop-the-stop', (event, arg) => {
+  mb.tray.setTitle('0:00');
+  createWindow();
+})
+
+ipcMain.on('timer-message', (event, time) => {
+  try {
+    mb.tray.setTitle(_.toString(time));
+  } catch(e) {
+    console.log(e)
+  }
+});
+

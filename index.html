@@ -1,8 +1,77 @@
 <html>
     <head>
-        <title>Example App</title>
+        <title>Timer</title>
+        <link href="bootstrap.min.css" rel="stylesheet" media="screen">
+        <script type="text/javascript">
+            var ipcRenderer = require('electron').ipcRenderer;
+            var remote = require('electron').remote;
+            var interval;
+
+            function stopTimer() {
+                if (!interval) {
+                    return;
+                }
+
+                clearInterval(interval);
+                ipcRenderer.send('clear-timer');
+                remote.getCurrentWindow().hide();
+            }
+
+            function timerUpdate(seconds) {
+                if (seconds < 1) {
+                    clearInterval(interval);
+                    ipcRenderer.send('pop-the-stop');
+                    return;
+                }
+                var format = (parseInt(seconds/60)) + ':' + (seconds % 60);
+                ipcRenderer.send('timer-message', format);
+            };
+
+            function startCoundown(seconds) {
+                if (interval) {
+                    return;
+                }
+
+                interval = setInterval(() => {
+                    seconds = seconds - 1;
+                    timerUpdate(seconds);
+                }, 1000);
+            }
+
+            function startTimer(minutes) {
+                var seconds = minutes*60;
+                startCoundown(seconds);
+                remote.getCurrentWindow().hide();
+            }
+        </script>
     </head>
     <body>
-        hello world
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-xs-6">
+                    <a
+                        class="btn btn-default"
+                        href="#"
+                        onclick="startTimer(25)"
+                    > Start 25:00 </a>
+                </div>
+                <div class="col-xs-6">
+                    <a
+                        class="btn btn-default"
+                        href="#"
+                        onclick="startTimer(5)"
+                    > Start 5:00 </a>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 35px;">
+                <div class="col-md-offset-1 col-xs-3">
+                    <a
+                        href="#"
+                        onclick="stopTimer()"
+                        class="btn btn-danger"
+                    > Stop timer </a>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
