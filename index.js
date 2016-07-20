@@ -1,7 +1,7 @@
 var menubar = require('menubar');
 var electron = require('electron');
 var _ = require('lodash');
-const {ipcMain, BrowserWindow} = electron;
+const {ipcMain, BrowserWindow, app} = electron;
 var mb = menubar({
   index: 'file://' + __dirname + '/index.html',
   icon: __dirname + '/timer.png'
@@ -63,11 +63,8 @@ ipcMain.on('stop-coundown-timer', (event, arg) => {
   clearInterval(interval);
 })
 
-ipcMain.on('timer-message', (event, time) => {
-  try {
-    mb.tray.setTitle(_.toString(time));
-  } catch(e) {
-    console.log(e)
-  }
-});
-
+ipcMain.on('quit-timestop-app', (event) => {
+  clearInterval(interval);
+  mb.tray.setTitle('00:00');
+  app.quit();
+})

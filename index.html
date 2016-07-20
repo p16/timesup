@@ -10,6 +10,10 @@
                 ipcRenderer.send('stop-coundown-timer');
             }
 
+            function closeApp() {
+                ipcRenderer.send('quit-timestop-app');
+            }
+
             function startTimer(minutes) {
                 ipcRenderer.send('start-coundown-timer', minutes);
                 remote.getCurrentWindow().hide();
@@ -41,6 +45,13 @@
                         onclick="stopTimer()"
                         class="btn btn-danger"
                     > Stop timer </a>
+                </div>
+                <div class="col-xs-3">
+                    <a
+                        href="#"
+                        onclick="closeApp()"
+                        class="btn btn-danger"
+                    > Quit app</a>
                 </div>
             </div>
         </div>
