@@ -5,7 +5,7 @@
         <script type="text/javascript">
             var ipcRenderer = require('electron').ipcRenderer;
             function closeWindow() {
-                ipcRenderer.send('asynchronous-message', 'ping');
+                ipcRenderer.send('close-done-window', 'ping');
             };
         </script>
     </head>

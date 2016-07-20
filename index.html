@@ -5,42 +5,13 @@
         <script type="text/javascript">
             var ipcRenderer = require('electron').ipcRenderer;
             var remote = require('electron').remote;
-            var interval;
 
             function stopTimer() {
-                if (!interval) {
-                    return;
-                }
-
-                clearInterval(interval);
-                ipcRenderer.send('clear-timer');
-                remote.getCurrentWindow().hide();
-            }
-
-            function timerUpdate(seconds) {
-                if (seconds < 1) {
-                    clearInterval(interval);
-                    ipcRenderer.send('pop-the-stop');
-                    return;
-                }
-                var format = (parseInt(seconds/60)) + ':' + (seconds % 60);
-                ipcRenderer.send('timer-message', format);
-            };
-
-            function startCoundown(seconds) {
-                if (interval) {
-                    return;
-                }
-
-                interval = setInterval(() => {
-                    seconds = seconds - 1;
-                    timerUpdate(seconds);
-                }, 1000);
+                ipcRenderer.send('stop-coundown-timer');
             }
 
             function startTimer(minutes) {
-                var seconds = minutes*60;
-                startCoundown(seconds);
+                ipcRenderer.send('start-coundown-timer', minutes);
                 remote.getCurrentWindow().hide();
             }
         </script>
