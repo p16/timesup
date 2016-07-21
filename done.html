@@ -1,6 +1,6 @@
 <html>
     <head>
-        <link href='https://fonts.googleapis.com/css?family=Josefin+Slab:600' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet' type='text/css'>
         <title>Done</title>
         <script type="text/javascript">
             var ipcRenderer = require('electron').ipcRenderer;
@@ -9,14 +9,11 @@
             };
         </script>
     </head>
-    <body style="background-color: 'white'; font-family: 'Josefin Slab', serif;">
+    <body style="background-color: 'white'; font-family: 'Bangers', cursive;">
         <div style="display: flex;align-items: center;justify-content: center;height: 100%;">
-            <div style="border-radius: 50px; border: solid 1px gray; background-color:#F0FFF0">
-                <h1 style="padding: 5px 50px; text-align:center;">
-                    <a style="text-decoration: none;" href="#" onclick="closeWindow()">Well done!</a>
-                    <br/>
-                    <small style="font-size:0.3em;">Click to close ;)</small>
-                </h1>
+            <div style="text-align:center;">
+                <h1 style="font-size:74px;">Time's up!</h1>
+                <a style="text-decoration: none;" href="#" onclick="closeWindow()">Close me</a>
             </div>
         </div>
     </body>

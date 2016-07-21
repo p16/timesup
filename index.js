@@ -4,7 +4,9 @@ var _ = require('lodash');
 const {ipcMain, BrowserWindow, app} = electron;
 var mb = menubar({
   index: 'file://' + __dirname + '/index.html',
-  icon: __dirname + '/timer.png'
+  icon: __dirname + '/timer.png',
+  width: 250,
+  height: 200
 });
 let mainWindow;
 let interval;
@@ -44,9 +46,12 @@ ipcMain.on('start-coundown-timer', (event, minutes) => {
   }
 
   seconds = minutes * 60;
+  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
+  mb.tray.setTitle(format);
 
   interval = setInterval(() => {
       seconds = seconds - 1;
+
       var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
       mb.tray.setTitle(format);
 
