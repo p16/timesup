@@ -1,9 +1,22 @@
+# Install
+
+```
+npm install
+```
+
 # Run
 
 ```
 ./node_modules/.bin/electron index.js
 ```
 
+# create apps
+
+```
+npm install -g electron-packager
+
+electron-packager . --all --out=compiled
+```
 
 # Refs
 
