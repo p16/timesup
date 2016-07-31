@@ -55,7 +55,6 @@ function saveActivity(activity, callback) {
     content[today] = [];
   }
 
-  console.log(today, activity);
   content[today].push(activity);
   writeFile(file, content);
 }
