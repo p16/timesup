@@ -16,7 +16,9 @@
             }
 
             function startTimer(minutes) {
-                ipcRenderer.send('start-coundown-timer', minutes);
+                var tag = document.getElementById('tag').value;
+
+                ipcRenderer.send('start-coundown-timer', {minutes: minutes, tag: tag});
                 remote.getCurrentWindow().hide();
                 document.getElementById('stopTimer').className = document.getElementById('stopTimer').className.replace('hidden', '');
             }
@@ -24,6 +26,11 @@
     </head>
     <body>
         <div class="container-fluid">
+            <div class="row" style="margin-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #DCDCDC;">
+                <div class="col-xs-12">
+                    <input id="tag" type="text" placeholder="Tag your activity" style="width:100%"/>
+                </div>
+            </div>
             <div class="row" style="margin-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #DCDCDC;">
                 <div class="col-xs-6">
                     <a
