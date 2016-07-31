@@ -1,16 +1,44 @@
-# Install
+# Time's up
+
+This is a simple app to use when doing timeboxing activities.
+
+## Why another timer for timeboxing?
+
+I wanted to experiment with [electron](http://electron.atom.io/) and I wanted an app that would give me 3 things:
+
+1. a timer
+2. a way to block the screen when the timer is over (I wanted somthing that would literally make me stop)
+3. a way to store data about my activities (a very simple `storage.json` file in the app folder at the moment)
+
+
+Point `2.` is less invasive than I'd like it, but it's enough for making you stop. Basically it will open a full screen window that will cover whatever you have on the screen. To close it you have to click the "close me" link :)
+
+## How does it look?
+
+This is the selection for your timer
+
+![timer selection](/select-timer.png)
+
+and this is the overlay when the time is up :)
+
+![timer selection](/times-up-overlay.png)
+
+
+# Development
+
+## Install
 
 ```
 npm install
 ```
 
-# Run
+## Run
 
 ```
 ./node_modules/.bin/electron index.js
 ```
 
-# create apps
+## Compile apps
 
 ```
 npm install -g electron-packager
@@ -18,15 +46,7 @@ npm install -g electron-packager
 electron-packager . --all --out=compiled
 ```
 
-# Refs
 
-https://github.com/electron/electron/blob/master/docs/api/tray.md
-https://github.com/maxogden/menubar#usage
+# License
 
-https://codepen.io/SitePoint/pen/MwNPVq
-
-https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Ic_timer_48px.svg/1024px-Ic_timer_48px.svg.png
-
-https://github.com/electron/electron/blob/master/docs/tutorial/mac-app-store-submission-guide.md
-
-
+Release under [MIT](/LICENSE) License

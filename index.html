@@ -1,14 +1,13 @@
 <html>
     <head>
         <title>Timer</title>
-        <link href="bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <script type="text/javascript">
             var ipcRenderer = require('electron').ipcRenderer;
             var remote = require('electron').remote;
 
             function stopTimer() {
                 ipcRenderer.send('stop-coundown-timer');
-                document.getElementById('stopTimer').className += ' hidden';
             }
 
             function closeApp() {
@@ -20,7 +19,6 @@
 
                 ipcRenderer.send('start-coundown-timer', {minutes: minutes, tag: tag});
                 remote.getCurrentWindow().hide();
-                document.getElementById('stopTimer').className = document.getElementById('stopTimer').className.replace('hidden', '');
             }
         </script>
     </head>
@@ -78,7 +76,7 @@
                         id="stopTimer"
                         href="#"
                         onclick="stopTimer()"
-                        class="btn btn-warning hidden"
+                        class="btn btn-warning"
                         style="width: 100%;"
                     > Stop timer </a>
                 </div>
