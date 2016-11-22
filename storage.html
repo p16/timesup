@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>Timer</title>
+        <link href="css/bootstrap.min2.css" rel="stylesheet" media="screen">
+        <script src="node_modules/moment/moment.js"></script>
+        <script type="text/javascript">
+            var ipcRenderer = require('electron').ipcRenderer;
+            // var remote = require('electron').remote;
+
+            ipcRenderer.on('storerage-cotent', function (event, content) {
+                console.log('storerage-cotent ::: content', content);
+
+                var table = document.getElementById('activiries');
+                var thead = document.createElement('thead');
+                var tbody = document.createElement('tbody');
+                var _tr_ = document.createElement('tr');
+                var _th_ = document.createElement('th');
+                var _td_ = document.createElement('td');
+
+                var tr = _tr_.cloneNode(false);
+                var th1 = _th_.cloneNode(false);
+                th1.appendChild(document.createTextNode('Date'));
+                tr.appendChild(th1);
+
+                var th2 = _th_.cloneNode(false);
+                th2.appendChild(document.createTextNode('Tag'));
+                tr.appendChild(th2);
+
+                var th3 = _th_.cloneNode(false);
+                th3.appendChild(document.createTextNode('Time'));
+                tr.appendChild(th3);
+                
+                thead.appendChild(tr);
+                table.appendChild(thead);
+
+                var days = Object.keys(content).sort(function(a, b) {
+                    return a > b ? -1 : 1;
+                });
+
+                days.forEach(function(day) {
+                    var dayFormatted = moment(day).format('YYYY-MM-DD');
+                    content[day].forEach(function(activity, key) {
+                        var tr = _tr_.cloneNode(false);
+                        var td1 = _td_.cloneNode(false);
+                        td1.appendChild(document.createTextNode(key === 0 ? dayFormatted : ''));
+                        tr.appendChild(td1);
+
+                        var td2 = _td_.cloneNode(false);
+                        td2.appendChild(document.createTextNode(activity.tag));
+                        tr.appendChild(td2);
+
+                        var td3 = _td_.cloneNode(false);
+                        td3.appendChild(document.createTextNode(activity.minutes));
+                        tr.appendChild(td3);
+
+                        tbody.appendChild(tr);
+                    })
+                })
+
+                table.appendChild(tbody);
+            });
+
+            ipcRenderer.send('storage-view-ready');
+
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <h1>Stored activities</h1>
+            <table id="activiries" class="table">
+            </table>
+        </div>
+    </body>
+</html>

@@ -11,9 +11,10 @@ var mb = menubar({
   index: 'file://' + __dirname + '/index.html',
   icon: __dirname + '/timer.png',
   width: 250,
-  height: 250
+  height: 300
 });
 
+let storageWindow;
 let mainWindow;
 let interval;
 let seconds;
@@ -114,6 +115,25 @@ ipcMain.on('stop-coundown-timer', (event, arg) => {
   mb.tray.setTitle('00:00');
   clearInterval(interval);
   activity = {};
+})
+
+ipcMain.on('show-saved-activities', (event, arg) => {
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  storageWindow = new BrowserWindow({
+    width,
+    height
+  });
+  // storageWindow.webContents.openDevTools();
+  storageWindow.loadURL('file://' + __dirname + '/storage.html');
+
+  storageWindow.on('closed', function() {
+    storageWindow = null;
+  });
+})
+
+ipcMain.on('storage-view-ready', (event) => {
+  var content = readFile(__dirname + '/storage.json');
+  storageWindow.webContents.send('storerage-cotent', content);
 })
 
 ipcMain.on('quit-timestop-app', (event) => {

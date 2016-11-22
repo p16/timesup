@@ -14,6 +14,10 @@
                 ipcRenderer.send('quit-timestop-app');
             }
 
+            function showStorage() {
+                ipcRenderer.send('show-saved-activities');
+            }
+
             function startTimer(minutes) {
                 var tag = document.getElementById('tag').value;
 
@@ -87,6 +91,17 @@
                         class="btn btn-danger"
                         style="width: 100%;"
                     > Quit app</a>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-xs-12">
+                    <a
+                        id="showStorage"
+                        href="#"
+                        onclick="showStorage()"
+                        class="btn btn-info"
+                        style="width: 100%;"
+                    > Show saved activities </a>
                 </div>
             </div>
         </div>
