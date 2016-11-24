@@ -23,6 +23,10 @@ and this is the overlay when the time is up :)
 
 ![timer selection](/times-up-overlay.png)
 
+there is also a view for the recorder activities
+
+![timer selection](/activities.png)
+
 
 # Development
 
