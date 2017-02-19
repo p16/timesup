@@ -14,7 +14,7 @@ function startCountdownTimer(mainWindow, mb, options, saveActivity) {
     mb.tray.setTitle('00:00')
   }
 
-  seconds = 10 //activity.minutes * 60
+  seconds = activity.minutes * 60
   var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0')
   mb.tray.setTitle(format)
 
