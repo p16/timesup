@@ -1,9 +1,10 @@
+'use strict'
+
 var menubar = require('menubar');
 var electron = require('electron');
 var _ = require('lodash');
-var fs = require('fs');
-var jsonfile = require('jsonfile');
-var moment = require('moment');
+var timer = require('./src/timer');
+var storage = require('./src/storage');
 
 const {ipcMain, BrowserWindow, app} = electron;
 
@@ -16,86 +17,9 @@ var mb = menubar({
 
 let storageWindow;
 let mainWindow;
-let seconds;
-let activity = {};
+let activity;
 
-
-/******* timer *******/
-let interval;
-
-function startCountdownTimer(options) {
-  if (interval) {
-    clearInterval(interval);
-    mb.tray.setTitle('00:00');
-    activity = {};
-  }
-
-  activity = options;
-  seconds = activity.minutes * 60;
-  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-  mb.tray.setTitle(format);
-
-  interval = setInterval(() => {
-      seconds = seconds - 1;
-
-      var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-      mb.tray.setTitle(format);
-
-      if (seconds === 0) {
-        mainWindow.show();
-        mb.tray.setTitle('00:00');
-        clearInterval(interval);
-        saveActivity(activity);
-      }
-  }, 1000);
-}
-
-function stopCountdownTimer() {
-  mb.tray.setTitle('00:00');
-  clearInterval(interval);
-  activity = {};
-}
-/******* timer *******/
-
-
-
-
-function readFile(file) {
-  try {
-    return jsonfile.readFileSync(file, {throws: false});
-  } catch(e) {
-  }
-
-  return null;
-}
-
-function writeFile(file, content) {
-  try {
-    jsonfile.writeFileSync(file, content, {throws: false});
-  } catch(e) {
-    console.log('Could not write your activity to filesystem :( [' + e.message + ']');
-  }
-
-  return null;
-}
-
-function saveActivity(activity, callback) {
-  var file = __dirname + '/storage.json';
-  var today = moment().format('YYYYMMDD');
-  var content = readFile(file);
-
-  if (!content) {
-    content = {};
-  }
-
-  if (!content[today]) {
-    content[today] = [];
-  }
-
-  content[today].push(activity);
-  writeFile(file, content);
-}
-
+/******* main *******/
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
@@ -118,7 +42,7 @@ mb.on('ready', function ready() {
 });
 
 ipcMain.on('start-coundown-timer', (event, options) => {
-  startCountdownTimer(options)
+  activity = timer.startCountdownTimer(mainWindow, mb, options, storage.saveActivity)
 })
 
 ipcMain.on('close-done-window', (event, arg) => {
@@ -127,11 +51,11 @@ ipcMain.on('close-done-window', (event, arg) => {
 
 ipcMain.on('close-done-window-and-start-again', (event, arg) => {
   mainWindow.hide();
-  startCountdownTimer(_.cloneDeep(activity))
+  activity = timer.startCountdownTimer(mainWindow, mb, _.cloneDeep(activity), storage.saveActivity)
 });
 
 ipcMain.on('stop-coundown-timer', (event, arg) => {
-  stopCountdownTimer()
+  timer.stopCountdownTimer(mb)
 })
 
 ipcMain.on('show-saved-activities', (event, arg) => {
@@ -149,11 +73,12 @@ ipcMain.on('show-saved-activities', (event, arg) => {
 })
 
 ipcMain.on('storage-view-ready', (event) => {
-  var content = readFile(__dirname + '/storage.json');
+  var content = storage.readFile(__dirname + '/storage.json');
   storageWindow.webContents.send('storerage-cotent', content);
 })
 
 ipcMain.on('quit-timestop-app', (event) => {
-  stopCountdownTimer()
+  timer.stopCountdownTimer(mb)
   app.quit();
 })
+/******* main *******/
