@@ -7,6 +7,9 @@
             function closeWindow() {
                 ipcRenderer.send('close-done-window', 'ping');
             };
+            function closeWindowAndStartAgain() {
+                ipcRenderer.send('close-done-window-and-start-again', 'ping');
+            };
         </script>
     </head>
     <body style="background-color: 'white'; font-family: 'Bangers', cursive;">
@@ -14,6 +17,11 @@
             <div style="text-align:center;">
                 <h1 style="font-size:74px;">Time's up!</h1>
                 <a style="text-decoration: none;" href="#" onclick="closeWindow()">Close me</a>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <a style="text-decoration: none;" href="#" onclick="closeWindowAndStartAgain()">Start again</a>
             </div>
         </div>
     </body>

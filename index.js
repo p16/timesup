@@ -24,6 +24,11 @@ ipcMain.on('close-done-window', (event, arg) => {
   mainWindow.hide();
 });
 
+ipcMain.on('close-done-window-and-start-again', (event, arg) => {
+  mainWindow.hide();
+  startCountdownTimer(_.cloneDeep(activity))
+});
+
 function readFile(file) {
   try {
     return jsonfile.readFileSync(file, {throws: false});
@@ -81,6 +86,32 @@ mb.on('ready', function ready() {
   createWindow();
 });
 
+function startCountdownTimer(options) {
+  if (interval) {
+    clearInterval(interval);
+    mb.tray.setTitle('00:00');
+    activity = {};
+  }
+
+  activity = options;
+  seconds = activity.minutes * 60;
+  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
+  mb.tray.setTitle(format);
+
+  interval = setInterval(() => {
+      seconds = seconds - 1;
+
+      var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
+      mb.tray.setTitle(format);
+
+      if (seconds === 0) {
+        mainWindow.show();
+        mb.tray.setTitle('00:00');
+        clearInterval(interval);
+        saveActivity(activity);
+      }
+  }, 1000);
+}
 
 ipcMain.on('start-coundown-timer', (event, options) => {
   if (interval) {
