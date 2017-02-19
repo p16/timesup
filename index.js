@@ -16,18 +16,49 @@ var mb = menubar({
 
 let storageWindow;
 let mainWindow;
-let interval;
 let seconds;
 let activity = {};
 
-ipcMain.on('close-done-window', (event, arg) => {
-  mainWindow.hide();
-});
 
-ipcMain.on('close-done-window-and-start-again', (event, arg) => {
-  mainWindow.hide();
-  startCountdownTimer(_.cloneDeep(activity))
-});
+/******* timer *******/
+let interval;
+
+function startCountdownTimer(options) {
+  if (interval) {
+    clearInterval(interval);
+    mb.tray.setTitle('00:00');
+    activity = {};
+  }
+
+  activity = options;
+  seconds = activity.minutes * 60;
+  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
+  mb.tray.setTitle(format);
+
+  interval = setInterval(() => {
+      seconds = seconds - 1;
+
+      var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
+      mb.tray.setTitle(format);
+
+      if (seconds === 0) {
+        mainWindow.show();
+        mb.tray.setTitle('00:00');
+        clearInterval(interval);
+        saveActivity(activity);
+      }
+  }, 1000);
+}
+
+function stopCountdownTimer() {
+  mb.tray.setTitle('00:00');
+  clearInterval(interval);
+  activity = {};
+}
+/******* timer *******/
+
+
+
 
 function readFile(file) {
   try {
@@ -86,66 +117,21 @@ mb.on('ready', function ready() {
   createWindow();
 });
 
-function startCountdownTimer(options) {
-  if (interval) {
-    clearInterval(interval);
-    mb.tray.setTitle('00:00');
-    activity = {};
-  }
-
-  activity = options;
-  seconds = activity.minutes * 60;
-  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-  mb.tray.setTitle(format);
-
-  interval = setInterval(() => {
-      seconds = seconds - 1;
-
-      var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-      mb.tray.setTitle(format);
-
-      if (seconds === 0) {
-        mainWindow.show();
-        mb.tray.setTitle('00:00');
-        clearInterval(interval);
-        saveActivity(activity);
-      }
-  }, 1000);
-}
-
 ipcMain.on('start-coundown-timer', (event, options) => {
-  if (interval) {
-    clearInterval(interval);
-    mb.tray.setTitle('00:00');
-    activity = {};
-  }
-
-  activity = options;
-  seconds = options.minutes * 60;
-  var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-  mb.tray.setTitle(format);
-
-  interval = setInterval(() => {
-      seconds = seconds - 1;
-
-      var format = _.padStart(parseInt(seconds/60), 2, '0') + ':' + _.padStart(seconds % 60, 2, '0');
-      mb.tray.setTitle(format);
-
-      if (seconds === 0) {
-        mainWindow.show();
-        mb.tray.setTitle('00:00');
-        clearInterval(interval);
-        saveActivity(activity, () => {
-          activity = {};
-        });
-      }
-  }, 1000);
+  startCountdownTimer(options)
 })
 
+ipcMain.on('close-done-window', (event, arg) => {
+  mainWindow.hide();
+});
+
+ipcMain.on('close-done-window-and-start-again', (event, arg) => {
+  mainWindow.hide();
+  startCountdownTimer(_.cloneDeep(activity))
+});
+
 ipcMain.on('stop-coundown-timer', (event, arg) => {
-  mb.tray.setTitle('00:00');
-  clearInterval(interval);
-  activity = {};
+  stopCountdownTimer()
 })
 
 ipcMain.on('show-saved-activities', (event, arg) => {
@@ -168,8 +154,6 @@ ipcMain.on('storage-view-ready', (event) => {
 })
 
 ipcMain.on('quit-timestop-app', (event) => {
-  clearInterval(interval);
-  mb.tray.setTitle('00:00');
-  activity = {};
+  stopCountdownTimer()
   app.quit();
 })
