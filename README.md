@@ -17,15 +17,15 @@ Point `2.` is less invasive than I'd like it, but it's enough for making you sto
 
 This is the selection for your timer
 
-![timer selection](/select-timer.png)
+![timer selection](/doc/imgs/select-timer.png)
 
 and this is the overlay when the time is up :)
 
-![timer selection](/times-up-overlay.png)
+![timer selection](/doc/imgs/times-up-overlay.png)
 
 there is also a view for the recorder activities
 
-![timer selection](/activities.png)
+![timer selection](/doc/imgs/activities.png)
 
 
 # Development
