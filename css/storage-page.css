@@ -1,0 +1,55 @@
+.activities-container {
+  padding: 16px;
+}
+
+.activities-container h1 {
+  margin-top: 0;
+  text-align: center;
+}
+
+#activities .list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#activities .list .list-item {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  border: 1px solid #A2AEBB;
+  border-radius: 4px;
+  width: 500px;
+  padding: 16px;
+}
+
+#activities .list .list-item div {
+  flex: 1;
+}
+
+#activities .list .list-item .list-item-day {
+  border-bottom: 1px solid #A2AEBB;
+  text-align: center;
+  padding-bottom: 8px;
+  font-weight: bold;
+}
+
+#activities .list .list-item .list-item-tags-time div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #D0D9DD;
+  padding: 4px 8px;
+}
+
+#activities .list .list-item .list-item-tags-time div.total {
+  font-weight: bold;
+  padding: 8px 8px;
+  text-transform: capitalize;
+}
+
+#activities .list .list-item .list-item-tags-time div span:first-child {
+  padding-right: 8px;
+}

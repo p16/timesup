@@ -1,0 +1,136 @@
+* {
+  font-family: sans-serif;
+}
+
+.app-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  max-width: 250px;
+  width: 100%;
+}
+
+.app-menu .app-menu__tag {
+  margin-bottom: 8px;
+}
+
+.app-menu input {
+  padding: 8px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.app-menu a.button {
+  background-color: #3F88C5;
+  font-size: 14px;
+  padding: 10px 10px;
+  border-radius: 4px;
+  /*border: 1px solid #1C3144;*/
+  color: #ffffff;
+  text-decoration: none;
+  width: 80px;
+  text-align: center;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);
+}
+
+.app-menu a.button.button--white {
+  background-color: #ffffff;
+  border: 1px solid #1C3144;
+  color: #000000;
+}
+
+.app-menu a.button.button--red {
+  background-color: #B61F24;
+  color: #ffffff;
+}
+
+.app-menu a.button.button--yellow {
+  background-color: #FFBA08;
+  color: #000000;
+}
+
+.app-menu a.button.button--light-blue {
+  background-color: #88CCF1;
+  color: #000000;
+}
+
+.app-menu .app-menu__standard-times {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-top: 1px solid #A2AEBB;
+  width: 100%;
+  padding-top: 8px;
+}
+
+.app-menu .app-menu__custom-time {
+  border-top: 1px solid #A2AEBB;
+  width: 100%;
+  padding-top: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.app-menu .app-menu__custom-time h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.app-menu .app-menu__custom-time .app-menu__custom-time__input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-menu .app-menu__stop-timer {
+  border-top: 1px solid #A2AEBB;
+  width: 100%;
+  padding-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-menu .app-menu__show-registered {
+  border-top: 1px solid #A2AEBB;
+  width: 100%;
+  padding-top: 8px;
+  display: flex;
+}
+
+.app-menu .app-menu__show-registered a {
+  flex: 1;
+}
+
+
+
+
+/* Done page */
+
+.done-page {
+  background-color: 'white';
+  font-family: 'Bangers', cursive;
+}
+
+.done-page .done-page__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.done-page .done-page__container a {
+  text-decoration: none;
+  padding: 18px;
+}
+
+.done-page .done-page__container h1 {
+  font-size: 74px;
+}

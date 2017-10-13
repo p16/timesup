@@ -1,109 +1,97 @@
 <html>
-    <head>
-        <title>Timer</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <script type="text/javascript">
-            var ipcRenderer = require('electron').ipcRenderer;
-            var remote = require('electron').remote;
+  <head>
+    <title>Timer</title>
+    <link href="css/style.css" rel="stylesheet" media="screen">
+    <script type="text/javascript">
+      var ipcRenderer = require('electron').ipcRenderer;
+      var remote = require('electron').remote;
 
-            function stopTimer() {
-                ipcRenderer.send('stop-coundown-timer');
-            }
+      function stopTimer() {
+          ipcRenderer.send('stop-coundown-timer');
+      }
 
-            function closeApp() {
-                ipcRenderer.send('quit-timestop-app');
-            }
+      function closeApp() {
+          ipcRenderer.send('quit-timestop-app');
+      }
 
-            function showStorage() {
-                ipcRenderer.send('show-saved-activities');
-            }
+      function showStorage() {
+          ipcRenderer.send('show-saved-activities');
+      }
 
-            function startTimer(minutes) {
-                var tag = document.getElementById('tag').value;
+      function startTimer(minutes) {
+          var tag = document.getElementById('tag').value;
 
-                ipcRenderer.send('start-coundown-timer', {minutes: minutes, tag: tag});
-                remote.getCurrentWindow().hide();
-            }
-        </script>
-    </head>
-    <body>
-        <div class="container-fluid">
-            <div class="row" style="margin-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #DCDCDC;">
-                <div class="col-xs-12">
-                    <input id="tag" type="text" placeholder="Tag your activity" style="width:100%"/>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #DCDCDC;">
-                <div class="col-xs-6">
-                    <a
-                        class="btn btn-primary"
-                        href="#"
-                        onclick="startTimer(25)"
-                        style="width: 100%;"
-                    > Start 25:00 </a>
-                </div>
-                <div class="col-xs-6">
-                    <a
-                        class="btn btn-primary"
-                        href="#"
-                        onclick="startTimer(5)"
-                        style="width: 100%;"
-                    > Start 5:00 </a>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px;  padding-bottom: 10px; border-bottom: solid 1px #DCDCDC;">
-                <div class="col-xs-12">
-                    <p>How many minutes?</p>
-                </div>
-                <div class="col-xs-6" style="padding-top:4px;">
-                    <input
-                        style="width: 100px;"
-                        class="form-control input-lg"
-                        id="customTime"
-                        type="number"
-                        value="5"
-                        min="1"
-                    /></label>
-                </div>
-                <div class="col-xs-6">
-                    <a
-                        class="btn btn-default"
-                        href="#"
-                        onclick="startTimer(document.getElementById('customTime').value)"
-                        style="width: 100%;"
-                    > Start </a>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="col-xs-6">
-                    <a
-                        id="stopTimer"
-                        href="#"
-                        onclick="stopTimer()"
-                        class="btn btn-warning"
-                        style="width: 100%;"
-                    > Stop timer </a>
-                </div>
-                <div class="col-xs-6">
-                    <a
-                        href="#"
-                        onclick="closeApp()"
-                        class="btn btn-danger"
-                        style="width: 100%;"
-                    > Quit app</a>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="col-xs-12">
-                    <a
-                        id="showStorage"
-                        href="#"
-                        onclick="showStorage()"
-                        class="btn btn-info"
-                        style="width: 100%;"
-                    > Show saved activities </a>
-                </div>
-            </div>
+          ipcRenderer.send('start-coundown-timer', {minutes: minutes, tag: tag});
+          remote.getCurrentWindow().hide();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="app-menu">
+      <div class="app-menu__tag">
+        <input id="tag" type="text" placeholder="Tag your activity" />
+      </div>
+      <div class="app-menu__standard-times">
+        <a
+          class="button"
+          href="#"
+          onclick="startTimer(25)"
+        >
+          Start 25:00
+        </a>
+        <a
+          class="button"
+          href="#"
+          onclick="startTimer(5)"
+        > Start 5:00 </a>
+      </div>
+      <div class="app-menu__custom-time">
+        <h2>Set your custom time</h2>
+        <div class="app-menu__custom-time__input">
+          <input
+            style="width: 100px;"
+            class="form-control input-lg"
+            id="customTime"
+            type="number"
+            value="5"
+            min="1"
+          />
+          <a
+            class="button button--white"
+            href="#"
+            onclick="startTimer(document.getElementById('customTime').value)"
+          >
+            Start
+          </a>
         </div>
-    </body>
+      </div>
+      <div class="app-menu__stop-timer">
+        <a
+          id="stopTimer"
+          href="#"
+          onclick="stopTimer()"
+          class="button button--yellow"
+        >
+          Stop timer
+        </a>
+        <a
+          href="#"
+          onclick="closeApp()"
+          class="button button--red"
+        >
+          Quit app
+        </a>
+      </div>
+      <div class="app-menu__show-registered">
+        <a
+          id="showStorage"
+          href="#"
+          onclick="showStorage()"
+          class="button button--light-blue"
+        >
+          Show saved activities
+        </a>
+      </div>
+    </div>
+  </body>
 </html>

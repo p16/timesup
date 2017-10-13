@@ -1,74 +1,83 @@
 <html>
-    <head>
-        <title>Timer</title>
-        <link href="css/bootstrap.min2.css" rel="stylesheet" media="screen">
-        <script src="node_modules/moment/moment.js"></script>
-        <script type="text/javascript">
-            var ipcRenderer = require('electron').ipcRenderer;
-            // var remote = require('electron').remote;
+  <head>
+    <title>Timer</title>
+    <link href="css/storage-page.css" rel="stylesheet" media="screen">
+    <script src="node_modules/moment/moment.js"></script>
+  </head>
+  <body>
+    <div class="activities-container">
+      <h1>Registered activities</h1>
+      <div id="activities">
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var ipcRenderer = require('electron').ipcRenderer;
+    ipcRenderer.on('storerage-cotent', createTable);
+    ipcRenderer.send('storage-view-ready');
 
-            ipcRenderer.on('storerage-cotent', function (event, content) {
-                console.log('storerage-cotent ::: content', content);
+    function createTable (event, content) {
+      var activities = document.getElementById('activities');
+      var _div_ = document.createElement('div');
+      var _span_ = document.createElement('span');
 
-                var table = document.getElementById('activiries');
-                var thead = document.createElement('thead');
-                var tbody = document.createElement('tbody');
-                var _tr_ = document.createElement('tr');
-                var _th_ = document.createElement('th');
-                var _td_ = document.createElement('td');
+      var list = _div_.cloneNode(false);
+      list.className = 'list'
 
-                var tr = _tr_.cloneNode(false);
-                var th1 = _th_.cloneNode(false);
-                th1.appendChild(document.createTextNode('Date'));
-                tr.appendChild(th1);
+      var days = Object.keys(content).sort(function(a, b) {
+          return a > b ? -1 : 1;
+      });
 
-                var th2 = _th_.cloneNode(false);
-                th2.appendChild(document.createTextNode('Tag'));
-                tr.appendChild(th2);
+      days.forEach(function(day) {
+        var listItem = _div_.cloneNode(false);
+        listItem.className = 'list-item'
 
-                var th3 = _th_.cloneNode(false);
-                th3.appendChild(document.createTextNode('Time'));
-                tr.appendChild(th3);
-                
-                thead.appendChild(tr);
-                table.appendChild(thead);
+        var dayFormatted = moment(day).format('YYYY-MM-DD');
+        var listItemDay = _div_.cloneNode(false);
+        listItemDay.className = 'list-item-day'
+        listItemDay.innerHTML = dayFormatted
 
-                var days = Object.keys(content).sort(function(a, b) {
-                    return a > b ? -1 : 1;
-                });
+        listItem.appendChild(listItemDay)
 
-                days.forEach(function(day) {
-                    var dayFormatted = moment(day).format('YYYY-MM-DD');
-                    content[day].forEach(function(activity, key) {
-                        var tr = _tr_.cloneNode(false);
-                        var td1 = _td_.cloneNode(false);
-                        td1.appendChild(document.createTextNode(key === 0 ? dayFormatted : ''));
-                        tr.appendChild(td1);
+        var listItemTagsTime = _div_.cloneNode(false);
+        listItemTagsTime.className = 'list-item-tags-time'
 
-                        var td2 = _td_.cloneNode(false);
-                        td2.appendChild(document.createTextNode(activity.tag));
-                        tr.appendChild(td2);
+        var total = 0
+        content[day].forEach(function(activity, key) {
 
-                        var td3 = _td_.cloneNode(false);
-                        td3.appendChild(document.createTextNode(activity.minutes));
-                        tr.appendChild(td3);
+          total += (parseInt(activity.minutes) || 0)
 
-                        tbody.appendChild(tr);
-                    })
-                })
+          var entry = _div_.cloneNode(false);
+          var tag = _span_.cloneNode(false);
+          var time = _span_.cloneNode(false);
 
-                table.appendChild(tbody);
-            });
+          tag.innerHTML = activity.tag
+          time.innerHTML = activity.minutes
 
-            ipcRenderer.send('storage-view-ready');
+          entry.appendChild(tag)
+          entry.appendChild(time)
+          listItemTagsTime.appendChild(entry)
+        })
 
-        </script>
-    </head>
-    <body>
-        <div class="container-fluid">
-            <h1>Stored activities</h1>
-            <table id="activiries" class="table">
-            </table>
-        </div>
-    </body>
+        var entryTotal = _div_.cloneNode(false);
+        entryTotal.className = 'total'
+        var tag = _span_.cloneNode(false);
+        var time = _span_.cloneNode(false);
+        tag.innerHTML = 'total'
+
+        var hours = Math.floor(total/60)
+        var minutes = total - (60 * hours)
+
+        time.innerHTML = `${total} mins / ${hours}:${minutes < 10 ? '0'+minutes : minutes} hs`
+        entryTotal.appendChild(tag)
+        entryTotal.appendChild(time)
+        listItemTagsTime.appendChild(entryTotal)
+
+        listItem.appendChild(listItemTagsTime)
+        list.appendChild(listItem)
+      })
+
+      activities.appendChild(list)
+    }
+  </script>
 </html>

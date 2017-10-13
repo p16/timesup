@@ -1,28 +1,23 @@
 <html>
-    <head>
-        <link href='css/fonts.css' rel='stylesheet' type='text/css'>
-        <title>Done</title>
-        <script type="text/javascript">
-            var ipcRenderer = require('electron').ipcRenderer;
-            function closeWindow() {
-                ipcRenderer.send('close-done-window', 'ping');
-            };
-            function closeWindowAndStartAgain() {
-                ipcRenderer.send('close-done-window-and-start-again', 'ping');
-            };
-        </script>
-    </head>
-    <body style="background-color: 'white'; font-family: 'Bangers', cursive;">
-        <div style="display: flex;align-items: center;justify-content: center;height: 100%;">
-            <div style="text-align:center;">
-                <h1 style="font-size:74px;">Time's up!</h1>
-                <a style="text-decoration: none;" href="#" onclick="closeWindow()">Close me</a>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <a style="text-decoration: none;" href="#" onclick="closeWindowAndStartAgain()">Start again</a>
-            </div>
-        </div>
-    </body>
+  <head>
+    <link href='css/fonts.css' rel='stylesheet' type='text/css'>
+    <link href='css/style.css' rel='stylesheet' type='text/css'>
+    <title>Done</title>
+    <script type="text/javascript">
+      var ipcRenderer = require('electron').ipcRenderer;
+      function closeWindow() {
+        ipcRenderer.send('close-done-window', 'ping');
+      };
+      function closeWindowAndStartAgain() {
+        ipcRenderer.send('close-done-window-and-start-again', 'ping');
+      };
+    </script>
+  </head>
+  <body class="done-page">
+    <div class="done-page__container">
+      <h1>Time's up!</h1>
+      <a href="#" onclick="closeWindow()">Close me</a>
+      <a href="#" onclick="closeWindowAndStartAgain()">Start again</a>
+    </div>
+  </body>
 </html>
